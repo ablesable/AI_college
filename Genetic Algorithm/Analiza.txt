@@ -1,0 +1,94 @@
+#Bartosz Soból - 215881
+
+Na samym początku program pyta użytkownika ile generacji chce aby zostało przetworzone. Jest to warunek stopu.
+Następnie, pyta o rodzaj ruletki która będzie wykorzystywana przez wszystkie generacje. Póżniej jesteśmy proszeni o podanie prawdopodobieństwa mutacji i krzyżowania.
+
+
+1.RULETKI
+
+Za pomocą ruletki dla całej populacji (zbioru liczb) obliczana jest nowa populacja składająca się z wyselekcjonowanych osobników.
+
+W programie zaimplemetowane są 3 rodzaje ruletki: Liniowa i Kwadratowa oraz Pierwiastkowa.
+
+Liniowa, polega na obliczaniu szansy przetrwania dla każdego osobnika korzystając z wzoru: 
+wartość adaptacyjna dla poszczególnego osobnika /suma wartości adaptacyjnych dla całej populacji
+
+Kwadratowa ma natomiast wzór:
+wartość adaptacyjna dla poszczególnego osobnika^2 /suma wartości adaptacyjnych dla całej populacji^2
+
+Pierwiastkowa:
+pierwiastek z wartości adaptacyjnej dla poszczególnego osobnika / pierwiastek z sumy wartości adaptacyjnych dla całej populacji
+
+Różnica pomiędzy nimi widoczne są w tablicy "chances" w kodzie. 
+Analizując jednak te rodzaje można zauważyć:
+
+Przykładowe wartości skuteczności wzorów na ruletkę:
+
+LINIOWA:
+
+Populacja [1, 5, 6, 8]
+suma = 20
+
+1/20 = 0,05
+5/20 = 0,25
+6/20 = 0,3
+8/20 = 0,4
+
+-------------------
+KWADRATOWA:
+
+Populacja [1, 5, 6, 8]
+suma = 20
+
+1*1/(20*20) = 0,0025
+(5*5)/(20*20) = 0,0625
+(6*6)/(20*20) = 0,09
+(8*8)/(20*20) = 0,16
+
+---------------------
+Pierwiastkowa
+
+Populacja [1, 5, 6, 8]
+suma = 20
+
+sqrt(1)/sqrt(20) = 0.2237
+sqrt(5)/sqrt(20) = 0.4988
+sqrt(6)/sqrt(20) = 0.5458
+sqrt(8)/sqrt(20) = 0.6308
+														
+---------------------------------------
+Dochodzimy do wniosku, że najbardziej skuteczną metodą jest pierwiastkowa, ponieważ najbardziej zwiększa ona szanse dla każdego elementu populacji. 
+
+2.MUTACJA
+
+Mutacja wprowadza do genotypu losowe zmiany. W ten sposób wprowadzana jest różnorodność w populacji, czyli unikanie zbieżności w algorytmie.
+Użytkownik pyta jakie prawdopodobieństwo mutacji ma być zastosowane. Im jest ono wyższe, tym dla większej ilosci populacji następują zmiany. 
+Wysokie prawdopodobieństwo mutacji jest niekorzystne z racji, ze populacja wtedy rózni się znacznie od stanu początkowego.
+
+Jeżeli jest ustawiony niskie prawdopodobieństwo, to tylko dla wybranych osobników zostanie ona przeprowadzona. Więc w tym przypadku, populacja nie powinna różnić się od tej po przeprowadzeniu ruletki.
+
+Im dłuższy jest chromosom czyli im wyższa jest liczba osobnika w populacji (większa ilość bitów potrzebna do zapisu) tym mutacja ma mniejsze znaczenie.
+
+Mutacja może być pozytywna czyli zamiana z 0 na 1 - zwiększenie wartości osobnika, lub negatywna czyli kiedy z 1 zostanie zmieniona na 0 - zmniejszenie wartości osobnika. 
+
+
+3.KRZYŻOWNIE
+
+Krzyżowanie polega na połączeniu niektórych (wybierane losowo) genotypów w jeden. W programie populacja dobierana jest w pary.
+Jeżeli prawdopodobieństwo krzyżowania jest wysokie, to dla większej ilości par następuje krzyżowania ich genów.
+Wartości są krzyżowane w sposób losowy. Jedna para może mieć potomstwo w której dominują cechy jednego z rodziców, lub może mieć też potomstwo z wyrównaną liczbą cech.
+
+Im osobnicy mają wyższe wartości to ich potomstwo ma większą szansę odziedziczyć nawet w wyniku wymieszania bitów również wysoką wartość. 
+
+-------------------
+4. NASTĘPNA GENERACJA
+
+Populacja złożona z potomstwa poprzedniej generacji, tworzy następną i jest przekazywana znowu do ruletki.
+
+5. WNIOSKI
+
+Niższa wartość mutacji oraz wyższa wartość prawdopodobieństwa krzyżowania działa pozytywnie na stworzenie generacji osobników z wyższymi wartościami. 
+Wybór ruletki pierwiastkowej również jest wskazane, kierując się wynikami napisanymi wyżej.
+
+
+ 
