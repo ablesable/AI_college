@@ -67,7 +67,7 @@ Wysokie prawdopodobieństwo mutacji jest niekorzystne z racji, ze populacja wted
 
 Jeżeli jest ustawiony niskie prawdopodobieństwo, to tylko dla wybranych osobników zostanie ona przeprowadzona. Więc w tym przypadku, populacja nie powinna różnić się od tej po przeprowadzeniu ruletki.
 
-Im dłuższy jest chromosom czyli im wyższa jest liczba osobnika w populacji (większa ilość bitów potrzebna do zapisu) tym mutacja ma mniejsze znaczenie.
+Im dłuższy jest gen czyli im wyższa jest liczba osobnika w populacji (większa ilość bitów potrzebna do zapisu) tym mutacja ma mniejsze znaczenie.
 
 Mutacja może być pozytywna czyli zamiana z 0 na 1 - zwiększenie wartości osobnika, lub negatywna czyli kiedy z 1 zostanie zmieniona na 0 - zmniejszenie wartości osobnika. 
 
