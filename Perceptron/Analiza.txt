@@ -1,0 +1,40 @@
+#215881 -  Bartosz Soból - Perceptron
+
+WSTĘP
+
+Perceptron - prosta sieć neuronowa. Składa się z najczęściej z jedego neuronu McCullocha-Pittsa (neuron z thresholdem). Algorytm wykonywany z jego 
+pomocą implementuje uczenie nadzorowane. Przypisuje binarną wartość na wyjściu w zależności od parametrów wejściowych i przypisanych do nich wag.
+-----------
+PODSTAWOWE DZIAŁANIA
+
+W przykładzie zaimplementowany został perceptron, który klasyfikuje czy dane punkty znajdują się powyżej czy poniżej podanej prostej. 
+Użytkonik na początku wprowadza parametry funkcji liniowej. Na początku parametr A, później parametr B. Na końcu wprowadzany jest parametr C.
+
+Odpowiada to równaniu Ax + Bx + C = 0 (Program testowany był odpowiednio na parametrach 4, 2, 2)
+
+Podane parametry na początku trafiają do generatora (funkcja points_generator). W niej generowane są punkty x1 i x2 odpowiadające współrzędnym x i y w układzie 
+karetezjańskim. Przy podstawieniu do równania określana jest ich kategoria. Jeżeli wartość równania jest >= 0 to odpowiada to kategorii 1. 
+W przeciwnym wypadku przypisywana jest kategoria 0 (poniżej prostej). Następnie każdy z punktów trafia do perceptronu trenując go, kiedy zgaduje on do której kategorii,
+należy. Dzieje się to dzięki ciągłej korekcji wag. 
+
+------------
+ANALIZA WPŁYWU LICZNOŚCI ZBIORU NA UCZENIE
+
+W zaimplementowanym przykładzie zbiór podzielony jest na 80 punktów w zbiorze treningowym, i 20 punktów w zbiorze testowym. Odpowiada to zasadzie 80/20
+wykorzystywanej szeroko przy treningu sieci neuronowych.
+
+Z zaobserwowanych zachowań działania perceptronu można wywnioskować:
+
+- Im większy zbiór treningowy tym perceptron może zostać przetrenowany (tzn. zgadywać dobrze dla specyficznych przykładów, a gorzej dla zupełnie innych)
+- Już przy 5 epoch'u czyli przejściu przez cały zbiór treningowy i testowy perceptron osiąga szczytową wartość dla zbioru treningowego i testowego.
+- W przykładzie korekcja wag zaimplementowana jest w sposób prezentowany na zajęciach:
+waga_pierwsza = waga_pierwsza + błąd * punkt_x1 * (learning_rate * (ilość_powtórzeń - obecne_powtórzenie))
+
+Zaimplementowany learning_rate mnożony przez ilość powtórzeń minus obecne powtórzenie (jest to korekcja aby perceptron uczył się za szybko przy pierwszych
+powtórzeniach). Spełnia to swoją rolę! Dzięki temu pierwsze iteracje są kluczowe.
+
+Głowny Wniosek: Najwięcej korekcji wag dokonuje się przy pierwszych iteracjach.
+
+
+PS. Wyniki prezentowane są na 2 oddzielnych wykresach wygenerowanych za pomocą biblioteki matplotlib. Najpierw dla zbioru treningowego, później dla testowego.
+
