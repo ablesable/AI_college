@@ -1,0 +1,12 @@
+
+Wymagania:
+
+- 3 warstwy (minimum)
+- MINST jako zbiór treningowy/testowy
+- warstwy złożone z fully connected layers
+- funkcja aktywacji ReLU w warstwach wejściowych
+- funkcja aktywacji Softmax w warstwie wyjściowej
+- wykresy postępu uczenia w tabeli lub wykresie
+
+
+- Przygotuj opis uwzględniający kolejne kroki w ramach przygotowania modelu, zbioru, treningu sieci i oceny wyników oraz parametry istotne dla każdego z kroków. 
