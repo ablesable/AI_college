@@ -1,0 +1,87 @@
+Analiza:
+----------------------------------- WSTĘP -----------------------------------
+Sieć powstaje za pomocą biblioteki pytorch. Za jej pomocą musimy dokonać treningu w kwalifikacji zbioru 
+MINST - https://www.wikiwand.com/en/MNIST_database
+
+----------------------------------- MODEL -----------------------------------
+Program na samym początku wymaga modelu, który zaimplementowałem za pomocą struktury Sequetnial.
+Pozwala ona na proste ustawienie kolejności wykonywanych poleceń w sieci neuronowej.
+
+Wymogiem było stworzenie sieci minimum 3 warstwowej. W moim przypadku sieć jest 4 warstwowa.
+
+Przygotowując model służący kwalifikacji liczbowej na zbiorze MINST, zaimplementowałem:
+
+- Pierwszą warstwę wejściową o rozmiarze 28*28 - liczba pixeli pojedynczego obrazu ze zbioru, oraz z połączeniem każdego wejścia
+do warstwy następnej.(Wynika z tego, że wynik pojedynczego neuronu trafia do 256 wejść warstwy ukrytej) - spełniony wymgóg FULLY CONNECTED LAYERS
+
+Aby zaimplementować fully connected layers - czyli wszystkie wejścia warstwy poprzedniej, trafiają
+do każdej aktywacyjnej jednostki warstwy następnej.
+
+Dzieje się to za pomocą nn.Linear() czyli sposobie budowania sieci za pomocą transformacji liniowej.
+
+- Druga wartsta: na wejściu 256, z połączeniem każdego wejścia do 64 wejść warstwy trzeciej.
+
+- Trzecie warstwa ukryta - 64 wejścia, z połączeniem do 32 wejść czwartej. 
+
+- Czwarta warstwa wyjściowa ma 32 wejścia i 10 połączeń na każde wejście - odpowiadające kwalifikacji liczby od 0 do 9.
+
+Przy każdej warstwie niewyjściowej następuje użycie funckji ReLU - rectified linear unit function.
+ReLU polega na wyprowadzeniu wejścia bez zmian jeżeli jego wartość jest dodatnia. W przeciwnym
+wypadku, kiedy wartość jest ujemna na wyprowadzeniu wartości zerowej.
+
+Na koniec: 
+Przy warstwie wyjściowej następuje użycie funkcji LogSoftmax. Funkcja softmax pobiera na wejściu
+wektor n liczb, a na wyjściu oddaje wektor n liczb których suma jest równa 1. Dzięki niej można
+określić, która wartość w wektorze jest najbardziej prawdopodobna.
+Wersja LogSoftmax jest wydajniejszą formą funkcji softmax. Nie wchodząc w matematyczne szczegóły, 
+zwiększa ona numeryczną wydajność, oraz optymalizacje gradientu. Zamiast prawdopodieństwa używany jest
+logarytm prawdopodieństwa.
+
+Po implementacji modelu następuje przygotowanie zbioru treningowego, testowego oraz parametrów.
+
+----------------------------------- ZBIÓR -----------------------------------
+
+Na samym początku ustawiany jest optimiser - za pomocą niego oznajmiam, że chcę użycie w mojej sieci SGD - stochastic gradient descent, oraz
+ustawiam learning rate na wartość początkową 0.003.
+SGD to iteracyjny sposób by wykorzystać metodę numeryczną gradientu prostego - znalezienia minimum funkcji. 
+
+learnign rate to tzw. hiperparametr - Kontroluje jak szybko model uczący powinien adaptować się do problemu. 
+
+Następnie do zmiennej criterion przypisuje funkcje straty CrossEntropyLoss(). (loss function)
+Funckja straty używana jest do określania jak zdolny jest model do przewidywania pożądanego wyjścia. 
+
+"This criterion combines nn.LogSoftmax() and nn.NLLLoss() in one single class." - dokumentacja pytorch o CrossEntropyLoss.
+Dzięki temu w samym modelu nie musimy używać LogSoftmax(). - stąd skomentowana linijka.
+
+Co do samego zbioru:
+za pomocą biblioteki torchvision importuję datasety MINST oraz dziele je na zbiór treningowy i testowy, w proporcji 80/20.
+Aby móc ich najpierw używać za pomocą transforms.Compose(transforms.ToTensor(), transforms.Normalize(...))
+- ToTensor() zmienia obraz w tensor rozumiany przez pytorch
+- transforms.Normalize() gdzie jako argumenty podawane są przykładowe wartości z laboratorium. Funkcja ta używana jest by znormalizować wartości
+występujące w obrazie. Więcej na ten temat tutaj : https://deeplizard.com/learn/video/lu7TCu7HeYc
+
+Później podzielony zbiór trafia za pomocą funkcji DataLoader do zbioru treningowego i testowego, ustawiając rozmiar batcha na 32 i tasując je.
+
+----------------------------------- TRENING -----------------------------------
+Użytkownik proszony jest o podanie liczby iteracji potrzebnych do trenowania. (epochs)
+
+W każdym epochu tworzona jest lista losses i accuracy, do której dokładane są wartości odpowiednio straty i dokładności dla obliczanego zbioru.
+
+Na samym początku "spłaszczamy" wcześniej znormalizowane zdjęcie z batcha (zdjęcie oraz label jakiej liczby dotyczy) w długi wektor
+pasujący do wejścia pierwszej warstwy (784)
+
+próbka z batcha (image) przekazywana jest do modelu - następuje uczenie sieci. 
+Do zmiennej loss przypisywany jest wynik funkcji criterion. Oblicza ona "dystans" czyli strate jaka wynosi pomiędzy oczekiwaną wartością dla
+zdjęcia a otrzymaną wartością na wyjściu sieci. Przy każdym powtórzeniu dopisywana jest do listy losses, aby później wyciągnąć średnią dla 
+całego zbioru. 
+Po przejściu zerowany jest gradient oraz obliczany jest on znowu na nowo za pomocą odpowiednio zero_grad()na modelu i backward() na wartości loss.
+Nowo obliczony gradient trafia do optimisera by posłużyć przy następnej próbce. - optimiser.step()
+
+Jeżeli wartość na wyjściu jest równa wartości labela (dobra predykcja), to do tablicy accuracy dopisywana jest ta wartość by potem wyciągnąć
+średnią na epoch. 
+
+----------------------------------- TEST -----------------------------------
+
+
+
+
